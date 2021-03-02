@@ -5,6 +5,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -528,34 +529,44 @@ bool moveStack(int newXPos, int newYPos, int stack_[], int cType[], int cPos[52]
 //deals out the deck of card that are not in the board
 void dealDeck(int cPos[52][2])
 {
+	
 	srand(time(NULL));
 
-	int deckCards = 0, randNum;
+	int deckCards = 0, deckMC = 0, fndCards = 0;
 	int deckMove[52];
 	bool found, randcard;
 	
 	//fill the deck with blank cards
 	for(int n = 0; n < 52; n++)
 	{
-		deckMove[0] = -1;
+		deckMove[n] = -1;
+	}
+	
+	//counts up the cards that are in the deck and adds them to a side deck
+	for(int c = 0; c < 52; c++)
+	{
+		if(cPos[c][0] == -5)
+		{
+			deckMove[deckCards] = c;
+			deckCards++;
+		}
 	}
 
-	//counts up the cards that are in the deck and adds them to a side deck
-	do
-	{
-		found = false;
-		
-		for(int c = 0; c < 52; c++)
-		{
-			if(cPos[c][0] == -5)
-			{
-				found = true;
+	//shuffle the side deck
+	
+	int n = sizeof(deckMove) / sizeof(deckMove[0]);
 
-				deckMove[deckCards] = c;
-				deckCards++;
-			}
-		}
-	} while (found);
+	// To obtain a time-based seed
+    unsigned seed = 0;
+ 
+    // Shuffling the array
+    shuffle(deckMove, deckMove + n, default_random_engine(seed));
+
+	for(int a = 0; a < 52; a++)
+	{
+		cout << deckMove[a] << " ";
+
+	}
 
 	if(deckCards != 0)
 	{
@@ -566,6 +577,34 @@ void dealDeck(int cPos[52][2])
 				//checks card below
 				if (checkPos(i, j, cPos) == true && checkPos(i, j + 1, cPos) == false)
 				{
+					
+					//move card at deckmove 1 to to this new pos if there is one then set up for the next move card
+					
+					if(fndCards < 6 && deckMC <= 24)
+					{
+						do
+						{
+							found = false;
+
+							if(deckMove[deckMC] == -1)
+							{
+								found = true;
+								deckMC++;
+							}
+							else
+							{
+								moveCard(deckMove[deckMC], i, j+1, cPos);
+								deckMC++;
+								fndCards++;
+							}
+						
+						} while (found);
+
+						break;
+					}
+					
+
+					/*
 					randcard = true;
 					
 					//check if the deck cards are not less than 1 if so then stop
@@ -586,11 +625,12 @@ void dealDeck(int cPos[52][2])
 					
 					}
 					//break to the for loop
+					*/
 				}
 			}
 		}
 	}
-	
+
 	return;
 }
 
