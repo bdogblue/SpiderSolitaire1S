@@ -24,7 +24,7 @@ bool createStack(int xPos, int yPos, int stack_[], int cType[], bool cVis[], int
 bool moveStack(int xPos, int yPos, int stack_[], int cType[], int cPos[52][2]);
 void dealDeck(int cPos[52][2]);
 
-int converAnswer(string choice);
+int convertAnswer(string choice);
 
 bool getChoices(int choices[], int check, bool cVis[], int cType[], int cPos[52][2]);
 
@@ -37,6 +37,10 @@ bool checkPos(int xPos, int yPos, int cPos[52][2]);
 bool checkPos(int xPos, int yPos, int& card, int cPos[52][2]);
 int checkType(int xPos, int yPos, int cPos[52][2], int cType[]);
 bool checkVis(int xPos, int yPos, int cPos[52][2], bool cVis[]);
+
+//Debug functions
+void createWinStack(int cType[], int cPos[52][2], bool cVis[]);
+
 
 void openScreen();
 
@@ -90,14 +94,14 @@ int main()
 			{
 				running = false;
 			}
-			
-			
 		}
 		else
 		{
 			setEndCsVis(card_Vis, card_Pos);
 			
 			checkBoard(winstacks, card_Types, card_Vis, card_Pos);
+
+			createWinStack(card_Types, card_Pos, card_Vis);
 
 			printBoard(winstacks, card_Types, card_Vis, card_Pos);
 
@@ -109,41 +113,6 @@ int main()
 			switch (choice)
 			{
 			case 'm':
-				/*
-				int stack_[13];
-
-				int x, y;
-
-				cout << "Enter the card or stack you would like to move" << endl;
-				cout << "x: ";
-				cin >> x;
-				cout << "y: ";
-				cin >> y;
-				
-				if(createStack(x, y, stack_, card_Types, card_Vis, card_Pos))
-				{
-					cout << "Enter the position you would like to move to" << endl;
-					cout << "x: ";
-					cin >> x;
-					cout << "y: ";
-					cin >> y; 
-
-					if(moveStack(x, y, stack_, card_Types, card_Pos))
-					{
-						cout << "Stack was moved" << endl;
-					}
-					else
-					{
-						cout << "Was not able to put that stack at this position" << endl;
-					}
-					
-				}
-				else
-				{
-					cout << "Was not able to create the stack" << endl;
-				}
-				*/
-
 				userAction(card_Vis, card_Types, card_Pos);
 				break;
 			case 'r':
@@ -472,7 +441,7 @@ bool createStack(int xPos, int yPos, int stack_[], int cType[], bool cVis[], int
 	{
 		return false;
 	}
-
+	return false;
 }
 
 //moves a stack of cards to a valid pos
@@ -523,7 +492,7 @@ bool moveStack(int newXPos, int newYPos, int stack_[], int cType[], int cPos[52]
 	}
 	
 
-	
+	return false;
 }
 
 //deals out the deck of card that are not in the board
@@ -602,30 +571,6 @@ void dealDeck(int cPos[52][2])
 
 						break;
 					}
-					
-
-					/*
-					randcard = true;
-					
-					//check if the deck cards are not less than 1 if so then stop
-					//loop through the given movedeck 
-					while(randcard && (deckCards < 0))
-					{
-						found = false;
-						
-						//till random out a card and place it at that position
-						while(!found)
-						{
-							//choose random card position in the new deck
-							randNum = 0;
-							
-						}
-
-						//take one from deck cards 
-					
-					}
-					//break to the for loop
-					*/
 				}
 			}
 		}
@@ -634,64 +579,22 @@ void dealDeck(int cPos[52][2])
 	return;
 }
 
-int converAnswer(string choice)
+int convertAnswer(string choice)
 {
-	if(choice == "A")
-		{
-			return 1;
-		}
-		else if (choice == "2")
-		{
-			return 2;
-		}
-		else if (choice == "3")
-		{
-			return 3;
-		}
-		else if (choice == "4")
-		{
-			return 4;
-		}
-		else if (choice == "5")
-		{
-			return 5;
-		}
-		else if (choice == "6")
-		{
-			return 6;
-		}
-		else if (choice == "7")
-		{
-			return 7;
-		}
-		else if (choice == "8")
-		{
-			return 8;
-		}
-		else if (choice == "9")
-		{
-			return 9;
-		}
-		else if (choice == "10")
-		{
-			return 10;
-		}
-		else if (choice == "J")
-		{
-			return 11;
-		}
-		else if (choice == "Q")
-		{
-			return 12;
-		}
-		else if (choice == "K")
-		{
-			return 13;
-		}
-		else
-		{
-			return -1;
-		}
+	if(choice == "A"){return 1;}
+	else if (choice == "2"){return 2;}
+	else if (choice == "3"){return 3;}
+	else if (choice == "4"){return 4;}
+	else if (choice == "5"){return 5;}
+	else if (choice == "6"){return 6;}
+	else if (choice == "7"){return 7;}
+	else if (choice == "8"){return 8;}
+	else if (choice == "9"){return 9;}
+	else if (choice == "10"){return 10;}
+	else if (choice == "J"){return 11;}
+	else if (choice == "Q"){return 12;}
+	else if (choice == "K"){return 13;}
+	else{return -1;}
 }
 
 //gets the cards that are visible on the board
@@ -736,7 +639,7 @@ void userAction(bool cVis[], int cType[], int cPos[52][2])
 	cout << "What card would you like to move?: ";
 	cin >> choice;
 	
-	check = converAnswer(choice);
+	check = convertAnswer(choice);
 
 	if(check == -1)
 	{
@@ -755,7 +658,7 @@ void userAction(bool cVis[], int cType[], int cPos[52][2])
 				cin >> choice;
 				
 				//converts to a type number
-				check = converAnswer(choice);
+				check = convertAnswer(choice);
 
 				if(check == -1)
 				{
@@ -797,7 +700,7 @@ void userAction(bool cVis[], int cType[], int cPos[52][2])
 				cin >> choice;
 				
 				//converts to a type number
-				check = converAnswer(choice);
+				check = convertAnswer(choice);
 
 				if(check == -1)
 				{
@@ -846,6 +749,8 @@ void checkBoard(int& wStacks, int cType[], bool cVis[], int cPos[52][2])
 	int nexType = 12, stackPos = 0, card;
 	int rowDown;
 	int stack[13];
+
+	cout << "Checking the board" << endl;
 
 	//find a King that is vissible
 	for (int i = 0; i < 6; i++)
@@ -968,6 +873,22 @@ bool checkVis(int xPos, int yPos, int cPos[52][2], bool cVis[])
 	else
 	{
 		return false;
+	}
+}
+
+// manully creates full stack for debuging
+void createWinStack(int cType[], int cPos[52][2], bool cVis[])
+{
+	int typ = 52;
+	
+	//In the open possintions on a new bourd col 4 row 5 down types 1 to 13
+	for(int p = 5; p < 19; p++)
+	{
+		//manully creating a full stack of types
+		//move that card to the new pos
+		moveCard(typ, 5, p, cPos);
+		cVis[typ] = true;
+		typ = typ-4;
 	}
 }
 
