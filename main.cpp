@@ -39,7 +39,7 @@ int checkType(int xPos, int yPos, int cPos[52][2], int cType[]);
 bool checkVis(int xPos, int yPos, int cPos[52][2], bool cVis[]);
 
 //Debug functions
-void createWinStack(int cType[], int cPos[52][2], bool cVis[]);
+void createWinStack(int wStacks, int cType[], int cPos[52][2], bool cVis[]);
 
 
 void openScreen();
@@ -97,11 +97,11 @@ int main()
 		}
 		else
 		{
+			createWinStack(winstacks, card_Types, card_Pos, card_Vis);
+			
 			setEndCsVis(card_Vis, card_Pos);
 			
 			checkBoard(winstacks, card_Types, card_Vis, card_Pos);
-
-			createWinStack(card_Types, card_Pos, card_Vis);
 
 			printBoard(winstacks, card_Types, card_Vis, card_Pos);
 
@@ -765,6 +765,8 @@ void checkBoard(int& wStacks, int cType[], bool cVis[], int cPos[52][2])
 				//begins the new stack
 				stack[stackPos] = card;
 				stackPos++;
+				
+				cout << "Found King" << endl;
 
 				while (val)
 				{
@@ -778,6 +780,8 @@ void checkBoard(int& wStacks, int cType[], bool cVis[], int cPos[52][2])
 					//checks the card under the new card
 					if (checkType(i, rowDown, cPos, cType) == nexType && checkVis(i, rowDown, cPos, cVis) == true && checkPos(i, rowDown, card, cPos) == true)
 					{
+						cout << card << endl;
+						
 						stack[stackPos] = card;
 						stackPos++;
 
@@ -786,6 +790,7 @@ void checkBoard(int& wStacks, int cType[], bool cVis[], int cPos[52][2])
 					}
 					else
 					{
+						cout << "next card type was not found" << endl;
 						val = false;
 					}
 
@@ -797,6 +802,8 @@ void checkBoard(int& wStacks, int cType[], bool cVis[], int cPos[52][2])
 					//add a cout to the win stacks
 					wStacks++;
 					
+					cout << "got full stack" << endl;
+
 					//move the cards off the board
 					for (int i = 0; i < 13; i++)
 					{
@@ -876,14 +883,17 @@ bool checkVis(int xPos, int yPos, int cPos[52][2], bool cVis[])
 	}
 }
 
-// manully creates full stack for debuging
-void createWinStack(int cType[], int cPos[52][2], bool cVis[])
+// manully creates full stacks for debuging
+void createWinStack(int wStacks, int cType[], int cPos[52][2], bool cVis[])
 {
 	int typ = 52;
-	
+
+	cout << "This is the number of wining stacks: " << wStacks << endl;
+	//cout << wStacks << endl;
 	//In the open possintions on a new bourd col 4 row 5 down types 1 to 13
 	for(int p = 5; p < 19; p++)
 	{
+		//cout << typ << endl;
 		//manully creating a full stack of types
 		//move that card to the new pos
 		moveCard(typ, 5, p, cPos);
